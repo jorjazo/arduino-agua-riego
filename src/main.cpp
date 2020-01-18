@@ -63,8 +63,8 @@ void turnOffRelays();
 #define PIN_WATER_LEVEL_TRIG   12
 #define PIN_WATER_LEVEL_ECHO   13
 
-#define WAIT_TIME_SECS     20  //10800  // 3 horas
-#define AIR_TIME_SECS      20  //10800  // 3 horas
+#define WAIT_TIME_SECS     2*3600  //10800  // 3 horas
+#define AIR_TIME_SECS      14L*3600L  //10800  // 3 horas
 #define WATER_LEVEL_LOW    30.0D //200 //cm
 #define WATER_LEVEL_HIGH   10.0D  //cm
 
@@ -167,12 +167,12 @@ void airLoop() {
   if(checkManualSkip(btn, &waitSetup)) return;
   checkForce(btn);
 
-  int ellapsedMs = millis() - startTimeMillis;
-  int ellapsedSecs = (int) (ellapsedMs / 1000);
+  long ellapsedMs = millis() - startTimeMillis;
+  long ellapsedSecs = (long) (ellapsedMs / 1000);
 
-  int reference = AIR_TIME_SECS;
-  if(selectedMode == MODE_MANUAL) reference = 0;
-  displayStatusNumbers(ellapsedSecs, reference);
+  long reference = AIR_TIME_SECS/60;
+  ///if(selectedMode == MODE_MANUAL) reference = 0;
+  displayStatusNumbers(ellapsedSecs/60, reference);
 
   if(ellapsedSecs >= AIR_TIME_SECS) {
     if(selectedMode == MODE_AUTO) {
@@ -210,11 +210,11 @@ void waitLoop() {
 
   if(checkManualSkip(btn, &unloadSetup)) return;
 
-  int ellapsedMs = millis() - startTimeMillis;
-  int ellapsedSecs = (int) (ellapsedMs / 1000);
-  int reference = WAIT_TIME_SECS;
+  long ellapsedMs = millis() - startTimeMillis;
+  long ellapsedSecs = (long) (ellapsedMs / 1000);
+  long reference = WAIT_TIME_SECS/60;
   if(selectedMode == MODE_MANUAL) reference = 0;
-  displayStatusNumbers(ellapsedSecs, reference);
+  displayStatusNumbers(ellapsedSecs/60, reference);
 
   if(ellapsedSecs >= WAIT_TIME_SECS) {
     if(selectedMode == MODE_AUTO) {
